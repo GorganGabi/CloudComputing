@@ -1,94 +1,132 @@
-const {User} = require('../models/UserModel');
-var HttpStatus = require('http-status-codes');
+const {Customer} = require('../models/CustomerModel');
+const HttpStatus = require('http-status-codes');
 
-module.exports.createUser = (req, res) => {
+module.exports.createCustomer = (req, res) => {
+    let contype = req.headers['content-type'];
+    if (!contype || contype.indexOf('application/json') !== 0) {
+        res.writeHead(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        res.end();
+    }
+
     let body = '';
     req.on('data', chunk => {
         body += chunk;
     });
 
     req.on('end', function () {
-        if (body) {
-            body = JSON.parse(body);
-            User.create({
-                username: body.username,
-                email: body.email,
-                phone: body.phone,
-                address: body.address
-            }).then(
-                () => {
-                    res.writeHead(HttpStatus.OK);
-                    res.end('Succes');
-                }
-            ).catch(err => {
-                console.log('[UserController] CreateUser Error ' + err);
-                res.end('Failure');
-            });
-        }
+        body = JSON.parse(body);
+        Customer.findOne({email: body.email}, (err, customer) => {
+            if (err) {
+                res.writeHead(HttpStatus.BAD_REQUEST);
+                res.end();
+            }
+            if (customer) {
+                res.writeHead(HttpStatus.CONFLICT);
+                return res.end()
+            }
+
+            if (body) {
+
+                Customer.create({
+                    name: body.name,
+                    email: body.email,
+                    phone: body.phone,
+                    address: body.address
+                }).then(
+                    () => {
+                        res.writeHead(HttpStatus.CREATED);
+                        res.end();
+                    }
+                ).catch(err => {
+                    console.log('[CustomerController] CreateCustomer Error ' + err);
+                    res.writeHead(HttpStatus.BAD_REQUEST);
+                    res.end();
+                });
+            }
+        });
     });
 };
 
 module.exports.getDetails = (req, res) => {
 
-    User.find({_id: req.params.id}, (err, user) => {
+    Customer.find({_id: req.params.id}, (err, customer) => {
         if (err) {
-            res.writeHead(200, {"Content-Type": "text/plain"});
-            res.end('Failure')
+            res.writeHead(HttpStatus.BAD_REQUEST);
+            res.end();
         }
-        res.writeHead(200, {"Content-Type": "application/json"});
-        res.end(JSON.stringify(user))
+
+        if (!customer) {
+            res.writeHead(HttpStatus.NO_CONTENT);
+            res.end()
+        }
+
+        res.writeHead(HttpStatus.OK, {"Content-Type": "application/json"});
+        res.end(JSON.stringify(customer))
     })
 };
 
-module.exports.getUsers = (req, res) => {
-    User.find({}, (err, user) => {
+module.exports.getCustomers = (req, res) => {
+    Customer.find({}, (err, Customer) => {
         if (err) {
-            res.writeHead(200, {"Content-Type": "text/plain"});
-            res.end('Failure')
+            res.writeHead(HttpStatus.BAD_REQUEST);
+            res.end();
         }
-        res.writeHead(200, {"Content-Type": "application/json"});
-        res.end(JSON.stringify(user))
+        res.writeHead(HttpStatus.OK, {"Content-Type": "application/json"});
+        res.end(JSON.stringify(Customer))
     })
 };
 
-module.exports.updateUser = (req, res) => {
+module.exports.updateCustomer = (req, res) => {
+
+    let contype = req.headers['content-type'];
+    if (!contype || contype.indexOf('application/json') !== 0) {
+        res.writeHead(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        res.end();
+    }
+
     let body = '';
     req.on('data', chunk => {
         body += chunk;
     });
 
     req.on('end', function () {
+
         if (body) {
             body = JSON.parse(body);
-            User.updateOne({_id: req.params.id}, {
-                $set: {
-                    username: body.username,
-                    email: body.email,
-                    phone: body.phone,
-                    address: body.address
-                }
-            }).then(
-                () => {
-                    res.writeHead(200);
-                    res.end('Succes');
-                }
-            ).catch(err => {
-                console.log('[UserController] CreateUser Error ' + err);
-                res.end('Failure');
-            });
+            Customer.updateOne(
+                {_id: req.params.id},
+                {
+                    $set: {
+                        name: body.name,
+                        email: body.email,
+                        phone: body.phone,
+                        address: body.address
+                    },
+                },
+                {},
+                (err, result) => {
+                    if (!result.nModified) {
+                        res.writeHead(HttpStatus.NO_CONTENT);
+                        res.end();
+                    } else {
+                        res.writeHead(HttpStatus.OK);
+                        res.end();
+                    }
+                })
         }
     });
 };
 
-module.exports.deleteUser = (req, res) => {
-    User.deleteOne({_id : req.params.id})
+module.exports.deleteCustomer = (req, res) => {
+    Customer.deleteOne({_id: req.params.id})
         .then(
             () => {
-                res.writeHead(200);
+                res.writeHead(HttpStatus.OK);
                 res.end('Succes');
             }
         ).catch(err => {
-        console.log('[UserController] deleteUser Error ' + err);
-        res.end('Failure');
+        console.log('[CustomerController] deleteCustomer Error ' + err);
+        res.writeHead(HttpStatus.BAD_REQUEST);
+        res.end();
     });
 };

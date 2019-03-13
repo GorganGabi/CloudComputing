@@ -7,20 +7,21 @@ const finalhandler = require('finalhandler');
 
 mongo.mongoose;
 
-var api = Router();
-api.use('/api', api)
+const api = Router();
+api.use('/api', api);
 
 api.get('/', function (req, res) {
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     res.end('Hello World!')
 });
 
-api.post('/users', userController.createUser);
-api.get('/users', userController.getUsers)
-api.get('/users/:id', userController.getDetails);
-api.put('/users/:id', userController.updateUser)
-api.delete('/users/:id', userController.deleteUser)
-var server = http.createServer(function(req, res) {
+api.post('/customers', userController.createCustomer);
+api.get('/customers', userController.getCustomers);
+api.get('/customers/:id', userController.getDetails);
+api.put('/customers/:id', userController.updateCustomer);
+api.delete('/customers/:id', userController.deleteCustomer);
+
+const server = http.createServer(function(req, res) {
     api(req, res, finalhandler(req, res))
 });
 
