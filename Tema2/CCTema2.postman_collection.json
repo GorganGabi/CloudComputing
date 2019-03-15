@@ -1,0 +1,419 @@
+{
+	"info": {
+		"_postman_id": "aaf81d68-4c86-4d8b-8d0b-930e292e5ed6",
+		"name": "CCTema2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "CreateCustomer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Ioana\",\r\n    \"email\" : \"ioanabogdan@gmail.com\",\r\n    \"phone\" : 740837112,\r\n    \"address\" : \"Iasi\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8185/api/customers/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8185",
+							"path": [
+								"api",
+								"customers",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCustomer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8185/api/customers/5c8977b11e53dd0db8a5d66d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8185",
+							"path": [
+								"api",
+								"customers",
+								"5c8977b11e53dd0db8a5d66d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllCustomers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8185/api/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8185",
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateCustomer",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Dani\",\r\n    \"email\" : \"danigorgan@gmail.com\",\r\n    \"phone\" : 756362938,\r\n    \"address\" : \"Iasi\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8185/api/customers/5c8977b11e53dd0db8a5d66d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8185",
+							"path": [
+								"api",
+								"customers",
+								"5c8977b11e53dd0db8a5d66d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCustomer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8185/api/customers/5c856a18d17aec31f0667414",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8185",
+							"path": [
+								"api",
+								"customers",
+								"5c856a18d17aec31f0667414"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "CreateProductTeapot",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"Teapot\",\r\n\t\"type\": \"Coffee brewer\",\r\n\t\"quantity\": \"100\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8185/api/customers/5c8971c6e197be46580eaafb/products/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8185",
+							"path": [
+								"api",
+								"customers",
+								"5c8971c6e197be46580eaafb",
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateProduct",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Laptop Dell\",\n\t\"type\": \"Laptop\",\n\t\"quantity\": \"200\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8185/api/customers/5c8971c6e197be46580eaafb/products/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8185",
+							"path": [
+								"api",
+								"customers",
+								"5c8971c6e197be46580eaafb",
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProduct",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8185/api/customers/5c8971c6e197be46580eaafb/products/5c8acf38e5786310dc7dbd7a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8185",
+							"path": [
+								"api",
+								"customers",
+								"5c8971c6e197be46580eaafb",
+								"products",
+								"5c8acf38e5786310dc7dbd7a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProducts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8185/api/customers/5c8971c6e197be46580eaafb/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8185",
+							"path": [
+								"api",
+								"customers",
+								"5c8971c6e197be46580eaafb",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateProduct",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Huawei P20\",\n\t\"type\": \"Telefon\",\n\t\"quantity\": \"100\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8185/api/customers/5c8971c6e197be46580eaafb/products/5c8acf51e5786310dc7dbd7b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8185",
+							"path": [
+								"api",
+								"customers",
+								"5c8971c6e197be46580eaafb",
+								"products",
+								"5c8acf51e5786310dc7dbd7b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteProduct",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8185/api/customers/5c8971c6e197be46580eaafb/products/5c8acf38e5786310dc7dbd7a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8185",
+							"path": [
+								"api",
+								"customers",
+								"5c8971c6e197be46580eaafb",
+								"products",
+								"5c8acf38e5786310dc7dbd7a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "404",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8185/api/customers/5c8971c6e197be46580eaafb/products/5c8acf38e5786310dc7dbd7a/alabalaportocala",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8185",
+					"path": [
+						"api",
+						"customers",
+						"5c8971c6e197be46580eaafb",
+						"products",
+						"5c8acf38e5786310dc7dbd7a",
+						"alabalaportocala"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "415",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "text/xml",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<a> \n<b>\n\tsdadsdsa\n</b></a>"
+				},
+				"url": {
+					"raw": "http://localhost:8185/api/customers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8185",
+					"path": [
+						"api",
+						"customers",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

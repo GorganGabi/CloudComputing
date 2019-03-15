@@ -11,11 +11,6 @@ mongo.mongoose;
 const api = Router();
 api.use('/api', api);
 
-api.get('/', function (req, res) {
-    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    res.end('Hello World!')
-});
-
 api.post('/customers', userController.createCustomer);
 api.get('/customers', userController.getCustomers);
 api.get('/customers/:id', userController.getCustomer);

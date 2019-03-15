@@ -95,7 +95,7 @@ module.exports.updateCustomer = (req, res) => {
         if (body) {
             body = JSON.parse(body);
 
-            Customer.findOne({email: body.email}, (err, customer) => {
+            Customer.findOne({_id: req.params.id}, (err, customer) => {
                 if (err) {
                     res.writeHead(HttpStatus.BAD_REQUEST);
                     res.end();
