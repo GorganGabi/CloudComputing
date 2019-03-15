@@ -1,0 +1,151 @@
+const {Product} = require('../models/ProductModel');
+const HttpStatus = require('http-status-codes');
+
+module.exports.createProduct = (req, res) => {
+    let contype = req.headers['content-type'];
+    if (!contype || contype.indexOf('application/json') !== 0) {
+        res.writeHead(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        res.end();
+    }
+
+    let body = '';
+    req.on('data', chunk => {
+        body += chunk;
+    });
+
+    req.on('end', function () {
+        body = JSON.parse(body);
+        Product.findOne({name: body.name}, (err, customer) => {
+            if (err) {
+                res.writeHead(HttpStatus.BAD_REQUEST);
+                res.end();
+            }
+            if (customer) {
+                res.writeHead(HttpStatus.CONFLICT);
+                return res.end()
+            }
+
+            if (body) {
+                console.log(body);
+                if (body.name === "Teapot" && body.type === "Coffee brewer") {
+                    res.writeHead(HttpStatus.IM_A_TEAPOT);
+                    return res.end();
+                }
+                Product.create({
+                    name: body.name,
+                    type: body.type,
+                    quantity: body.quantity,
+                    user_id: req.params.id
+                }, (err) => {
+                    if (err) {
+                        console.log('[CustomerController] CreateCustomer Error ' + err);
+                        res.writeHead(HttpStatus.BAD_REQUEST);
+                        res.end();
+                    } else {
+                        res.writeHead(HttpStatus.CREATED);
+                        res.end();
+                    }
+                })
+            }
+        });
+    });
+};
+
+module.exports.getProduct = (req, res) => {
+    console.log(req.params.id);
+    Product.find({_id: req.params.pid}, (err, product) => {
+        if (err) {
+            res.writeHead(HttpStatus.BAD_REQUEST);
+            res.end();
+        }
+        console.log("[getProduct] " + product);
+        if (product === []) {
+            res.writeHead(HttpStatus.NO_CONTENT);
+            res.end()
+        }
+
+        res.writeHead(HttpStatus.OK, {"Content-Type": "application/json"});
+        res.end(JSON.stringify(product))
+    })
+};
+
+module.exports.getProducts = (req, res) => {
+
+    Product.find({user_id: req.params.id}, (err, products) => {
+        if (err) {
+            res.writeHead(HttpStatus.BAD_REQUEST);
+            res.end();
+        }
+        res.writeHead(HttpStatus.OK, {"Content-Type": "application/json"});
+        res.end(JSON.stringify(products))
+    })
+};
+
+module.exports.updateProduct = (req, res) => {
+    let contype = req.headers['content-type'];
+    if (!contype || contype.indexOf('application/json') !== 0) {
+        res.writeHead(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        res.end();
+    }
+
+    let body = '';
+    req.on('data', chunk => {
+        body += chunk;
+    });
+
+    req.on('end', function () {
+
+        if (body) {
+            body = JSON.parse(body);
+            Product.findOne({name: body.name}, (err, product) => {
+                if (err) {
+                    res.writeHead(HttpStatus.BAD_REQUEST);
+                    res.end();
+                }
+                if (!product) {
+                    res.writeHead(HttpStatus.UNPROCESSABLE_ENTITY);
+                    return res.end()
+                }
+            });
+            Product.updateOne(
+                {_id: req.params.pid},
+                {
+                    $set: {
+                        name: body.name,
+                        type: body.type,
+                        quantity: body.quantity
+                    },
+                },
+                {},
+                (err, result) => {
+                    if (!result.nModified) {
+                        res.writeHead(HttpStatus.NO_CONTENT);
+                        res.end();
+                    } else {
+                        res.writeHead(HttpStatus.OK);
+                        res.end();
+                    }
+                })
+        }
+    });
+};
+
+module.exports.deleteProduct = (req, res) => {
+
+    Product.deleteOne({_id: req.params.pid})
+        .then(
+            (response) => {
+                if (response.deletedCount === 0) {
+                    res.writeHead(HttpStatus.UNPROCESSABLE_ENTITY);
+                    res.end();
+                } else {
+                    res.writeHead(HttpStatus.OK);
+                    res.end();
+                }
+            }
+        ).catch(err => {
+        console.log('[CustomerController] deleteCustomer Error ' + err);
+        res.writeHead(HttpStatus.BAD_REQUEST);
+        res.end();
+    });
+};

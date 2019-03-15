@@ -47,7 +47,7 @@ module.exports.createCustomer = (req, res) => {
     });
 };
 
-module.exports.getDetails = (req, res) => {
+module.exports.getCustomer = (req, res) => {
 
     Customer.find({_id: req.params.id}, (err, customer) => {
         if (err) {
@@ -55,7 +55,7 @@ module.exports.getDetails = (req, res) => {
             res.end();
         }
 
-        if (!customer) {
+        if (customer === []) {
             res.writeHead(HttpStatus.NO_CONTENT);
             res.end()
         }
@@ -66,13 +66,14 @@ module.exports.getDetails = (req, res) => {
 };
 
 module.exports.getCustomers = (req, res) => {
-    Customer.find({}, (err, Customer) => {
+
+    Customer.find({}, (err, customers) => {
         if (err) {
             res.writeHead(HttpStatus.BAD_REQUEST);
             res.end();
         }
         res.writeHead(HttpStatus.OK, {"Content-Type": "application/json"});
-        res.end(JSON.stringify(Customer))
+        res.end(JSON.stringify(customers))
     })
 };
 
@@ -93,6 +94,18 @@ module.exports.updateCustomer = (req, res) => {
 
         if (body) {
             body = JSON.parse(body);
+
+            Customer.findOne({email: body.email}, (err, customer) => {
+                if (err) {
+                    res.writeHead(HttpStatus.BAD_REQUEST);
+                    res.end();
+                }
+                if (!customer) {
+                    res.writeHead(HttpStatus.UNPROCESSABLE_ENTITY);
+                    return res.end()
+                }
+            });
+
             Customer.updateOne(
                 {_id: req.params.id},
                 {
@@ -117,12 +130,19 @@ module.exports.updateCustomer = (req, res) => {
     });
 };
 
+
 module.exports.deleteCustomer = (req, res) => {
+
     Customer.deleteOne({_id: req.params.id})
         .then(
-            () => {
-                res.writeHead(HttpStatus.OK);
-                res.end('Succes');
+            (response) => {
+                if (response){
+                    res.writeHead(HttpStatus.OK);
+                    res.end();
+                }else {
+                    res.writeHead(HttpStatus.UNPROCESSABLE_ENTITY);
+                    res.end();
+                }
             }
         ).catch(err => {
         console.log('[CustomerController] deleteCustomer Error ' + err);
