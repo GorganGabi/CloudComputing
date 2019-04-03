@@ -1,5 +1,16 @@
+var countries = [];
+var totalRequests, totalCountries, totalParticipants;
 
-function draw_bar() {
+
+function getData(){
+   countries = ['Romania', 'Jamaica', 'Spania', 'China', 'USA'];
+   totalRequests = 500;
+   totalCountries = 5;
+   totalParticipants =100;
+   console.log("[getData] totalRequests " + totalRequests);
+}
+
+function drawBar() {
     let ctx = document.getElementById('responses');
     ctx.height = 100;
     let myChart = new Chart(ctx, {
@@ -33,13 +44,13 @@ function draw_bar() {
     });
 }
 
-function draw_pie() {
+function drawPie(arr) {
     let ctx = document.getElementById('country');
     ctx.height = 100;
     let myChart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: ['Romania', 'Jamaica', 'Spania', 'China', 'USA'],
+            labels: arr,
             datasets: [{
                 label: '# of Countries',
                 data: [12, 19, 3, 5, 2],
@@ -73,8 +84,26 @@ function draw_pie() {
     });
 }
 
+function getTotalRequests() {
+    let th = document.getElementById('row1');
+    th.innerText = totalRequests;
+}
+
+function getTotalParticipants() {
+    let th = document.getElementById('row2');
+    th.innerText = totalParticipants;
+}
+
+function getTotalCountries() {
+    let th = document.getElementById('row3');
+    th.innerText = totalCountries;
+}
 
 window.onload = () => {
-    draw_pie();
-    draw_bar();
+    getData();
+    drawBar();
+    drawPie();
+    getTotalRequests();
+    getTotalParticipants();
+    getTotalCountries();
 };
